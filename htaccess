@@ -1,0 +1,26 @@
+# ============================================================
+#  .htaccess — Kape Inato (place inside /htdocs/)
+# ============================================================
+
+# ---- Security: Block direct access to sensitive files ----
+# Prevents anyone from opening db.php, config.php, or log files
+# directly in their browser.
+<FilesMatch "(db\.php|config\.php|helpers\.php|action_logs\.txt|\.env)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# ---- Environment Variables (DB + SMTP Credentials) ----
+SetEnv DB_HOST      sql211.infinityfree.com
+SetEnv DB_USER      if0_42007209
+SetEnv DB_PASS      wtfrjXL60z
+SetEnv DB_NAME      if0_42007209_kapeinato_db
+SetEnv SMTP_USER    jazdigamon12@gmail.com
+SetEnv SMTP_PASS    bhox lhtf zgeo iiit
+
+# ---- Disable directory listing ----
+Options -Indexes
+
+# ---- PHP error display OFF (production safety) ----
+php_flag display_errors off
+php_flag log_errors on

@@ -1,4 +1,19 @@
 <?php
+// ============================================================
+// reset.php — Administrative data wipe (auth-guarded)
+// ============================================================
+
+require_once __DIR__ . '/helpers.php';
+
+session_start();
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    http_response_code(403);
+    die("<h2 style='font-family:sans-serif;text-align:center;margin-top:80px;color:#ef4444;'>
+        403 — Forbidden<br>
+        <a href='login.php' style='font-size:1rem;color:#E8A040;text-decoration:none;'>← Admin Login</a>
+    </h2>");
+}
+
 /*
  * This file performs a full reset of temporary operational data used by the application.
  * It is intended for administrative cleanup, so it starts by loading the shared database connection from `db.php`.

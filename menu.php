@@ -141,12 +141,6 @@ Technical: CSS Grid or Flexbox, populated dynamically with PHP. -->
 // Description: Fallback images for menu items without uploaded images.
 // Function: Provides category-specific placeholder images from Unsplash.
 // Technical: Associative array mapping categories to image URLs.
-$placeholders = [
-    'Pizza'      => 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80',
-    'Drinks'     => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80',
-    'Pasta'      => 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&q=80',
-    'Appetizers' => 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80',
-];
 // Description: Database query to fetch all menu items.
 // Function: Retrieves menu data ordered by special status and creation date.
 // Technical: SELECT query with ORDER BY for display prioritization.
@@ -158,8 +152,6 @@ $result = $conn->query($sql);
 // Technical: While loop with fetch_assoc, conditional rendering for badges and availability.
 if ($result && $result->num_rows > 0):
     while ($row = $result->fetch_assoc()):
-        $upload_path = "uploads/" . htmlspecialchars($row['image_path']);
-        $is_url = str_starts_with($row['image_path'], 'http');
 
         // Description: Name-based image override map for specific menu items.
         // Function: Forces specific uploaded images for named items regardless of DB value.
@@ -172,11 +164,7 @@ if ($result && $result->num_rows > 0):
         if (array_key_exists($item_name_clean, $image_overrides)) {
             $img_src = $image_overrides[$item_name_clean];
         } else {
-$img_src = $is_url
-    ? $row['image_path']
-    : ((file_exists($upload_path) && $row['image_path'] !== 'default.jpg')
-        ? $upload_path
-        : ($placeholders[$row['category']] ?? 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80'));
+            $img_src = resolveMenuItemImage($row['image_path'], $row['category']);
         }
         $desc = !empty($row['description']) ? htmlspecialchars($row['description']) : 'Made fresh daily with premium ingredients.';
 ?>

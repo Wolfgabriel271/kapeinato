@@ -666,26 +666,466 @@ footer p { color: var(--text-muted); font-size: 0.82rem; }
 }
 .empty-state span { display: block; font-size: 3rem; margin-bottom: 16px; }
 
-/* ---- RESPONSIVE ----
-   This final section adapts the layout, typography, and spacing for tablets and phones so the interface remains usable on smaller screens. It functions to progressively simplify complex desktop structures like grids, sidebars, and button groups when horizontal space becomes limited. Technically, the stylesheet uses descending breakpoint-based media queries to override only the rules that need to change, which keeps the responsive layer efficient and readable.
-*/
-@media (max-width: 768px) {
-    nav ul { gap: 4px; }
-    nav ul li a { font-size: 0.75rem; padding: 7px 10px; }
-    .hero h1 { font-size: 2.8rem; }
-    .qr-layout { grid-template-columns: 1fr; }
-    .admin-layout { flex-direction: column; }
-    .admin-sidebar { width: 100%; height: auto; position: static; }
-    .admin-main { padding: 24px; }
-    .add-item-form .form-row { grid-template-columns: 1fr; }
-    .section { padding: 60px 5%; }
-    .menu-grid { padding: 40px 5%; }
+/* ---- Fix #8: Customer Order Lookup ---- */
+.order-lookup-section {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+.order-lookup-panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+.order-lookup-title {
+    color: var(--amber);
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+}
+.order-lookup-desc {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin: 0 0 16px;
+}
+.order-lookup-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+.order-lookup-field {
+    flex: 1;
+    min-width: 140px;
+}
+.order-lookup-field-wide {
+    flex: 2;
+    min-width: 200px;
+}
+.order-lookup-label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+.order-lookup-input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(0,0,0,0.3);
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+.order-lookup-btn {
+    padding: 10px 20px;
+    background: var(--amber);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.order-lookup-alert {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+}
+.order-lookup-alert-error {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+}
+.order-lookup-result {
+    margin-top: 18px;
+    background: rgba(232,160,64,0.05);
+    border: 1px solid rgba(232,160,64,0.3);
+    border-radius: 12px;
+    padding: 20px;
+}
+.order-lookup-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.order-lookup-order-id {
+    color: var(--amber);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.order-lookup-order-date {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-left: 10px;
+}
+.order-lookup-status-badge {
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid;
+}
+.order-lookup-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    font-size: 0.88rem;
+    margin-bottom: 16px;
+}
+.order-lookup-meta-label { color: var(--text-muted); }
+.order-lookup-total { color: var(--amber); }
+.order-lookup-items {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 12px;
+}
+.order-lookup-items-title {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 10px;
+}
+.order-lookup-item-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.88rem;
+}
+.order-lookup-qty { color: var(--text-muted); }
+.order-lookup-item-price { color: var(--amber); }
+.order-lookup-legacy-items {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    margin: 0;
+    line-height: 1.5;
+}
+.order-lookup-banner {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.order-lookup-banner-ready {
+    background: rgba(34,197,94,0.1);
+    border: 1px solid #22c55e;
+    color: #22c55e;
+    font-weight: 700;
+}
+.order-lookup-banner-cancelled {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+}
+.order-lookup-banner-pay {
+    background: rgba(245,158,11,0.08);
+    border: 1px solid var(--amber);
+    color: var(--text-secondary);
 }
 
+/* ============================================================
+   RESPONSIVE — Fix #3: Full Mobile System
+   Breakpoints: 768px (tablet), 480px (phone)
+   ============================================================ */
+
+/* ---- Hamburger Button (hidden on desktop) ---- */
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px; height: 36px;
+    background: none; border: none;
+    cursor: pointer; padding: 4px;
+    z-index: 1100;
+}
+.nav-hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--amber);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---- Mobile Nav Menu ---- */
+.nav-mobile-menu {
+    display: none;
+    position: fixed;
+    top: var(--nav-height); left: 0; right: 0;
+    background: rgba(8,10,14,0.98);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 20px 6% 28px;
+    z-index: 999;
+    flex-direction: column;
+    gap: 6px;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.nav-mobile-menu.open {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+}
+.nav-mobile-menu a {
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.88rem; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 12px 16px; border-radius: var(--radius-sm);
+    transition: var(--transition);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.nav-mobile-menu a:hover { background: rgba(232,160,64,0.07); color: var(--text-primary); }
+.nav-mobile-menu .nav-btn-admin {
+    background: var(--gradient-warm) !important;
+    color: var(--bg-void) !important;
+    -webkit-text-fill-color: var(--bg-void) !important;
+    text-align: center; margin-top: 8px;
+    border-radius: var(--radius-xl) !important;
+}
+
+/* ---- Admin Sidebar Mobile Toggle ---- */
+.admin-sidebar-toggle {
+    display: none;
+    align-items: center; gap: 10px;
+    padding: 12px 20px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-subtle);
+    cursor: pointer;
+    font-size: 0.88rem; color: var(--text-secondary);
+    font-weight: 500;
+    position: sticky; top: var(--nav-height); z-index: 100;
+}
+.admin-sidebar-toggle:hover { color: var(--amber); }
+
+/* Sidebar overlay on mobile */
+.admin-sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 299;
+}
+.admin-sidebar-overlay.open { display: block; }
+
+/* Table scroll wrapper — always enabled */
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.table-scroll-wrapper .data-table { min-width: 640px; }
+
+/* ============================================================
+   TABLET (≤ 768px)
+   ============================================================ */
+
+/* ============================================================
+   TABLET (≤ 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+
+    /* ── Navbar ── */
+    nav ul, #liveClock { display: none !important; }
+    .nav-hamburger { display: flex; }
+
+    /* ── Hero ── */
+    .hero h1 { font-size: 2.8rem; }
+    .hero-desc { font-size: 0.9rem; }
+    .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+
+    /* ── Sections ── */
+    .section { padding: 60px 5%; }
+    .section-inner { padding: 0; }
+    .features-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* ── Menu Page ── */
+    .menu-grid { padding: 40px 5%; }
+    .menu-grid .grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px;
+    }
+    .menu-card { min-height: unset; }
+    .menu-card-img { height: 160px; }
+    .menu-card-name { font-size: 1rem; }
+
+    /* ── Menu filters / category tabs ── */
+    .menu-filters,
+    .menu-category-tabs {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 5%;
+    }
+
+    /* ── Order Page ── */
+    .qr-layout { grid-template-columns: 1fr; }
+    .order-form { padding: 20px 16px; }
+    .form-section { padding: 20px 16px; }
+    .menu-select-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+    }
+
+    /* ── Order Lookup ── */
+    .order-lookup-section { padding: 24px 5%; }
+    .order-lookup-panel { padding: 20px 16px; }
+    .order-lookup-form { flex-direction: column; gap: 10px; }
+    .order-lookup-item-row { flex-wrap: wrap; gap: 6px; font-size: 0.85rem; }
+    .order-lookup-banner-pay { flex-direction: column; gap: 10px; text-align: center; }
+
+    /* ── Receipt Modal ── */
+    .modal-overlay { padding: 12px; }
+    .receipt-modal { width: 100% !important; max-width: 100% !important; margin: 0; }
+    .receipt-modal-inner { padding: 16px 14px !important; }
+    .receipt-qr-section { padding: 12px 8px !important; }
+    .receipt-actions { flex-direction: column; gap: 10px; }
+    .receipt-actions .btn { width: 100%; text-align: center; }
+
+    /* ── Admin Layout ── */
+    .admin-layout { flex-direction: row; position: relative; }
+    .admin-sidebar {
+        position: fixed !important;
+        top: var(--nav-height); left: 0;
+        height: calc(100vh - var(--nav-height));
+        width: 260px !important;
+        z-index: 300;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+    }
+    .admin-sidebar.open { transform: translateX(0); }
+    .admin-sidebar-toggle { display: flex; }
+    .admin-main { padding: 20px 16px; width: 100%; }
+    .admin-panel { padding: 20px 16px; }
+    .add-item-form .form-row { grid-template-columns: 1fr; }
+
+    /* ── Stats ── */
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-card { padding: 16px; }
+    .stat-card-value { font-size: 1.8rem; }
+
+    /* ── Data Table — horizontal scroll ── */
+    .data-table-wrap,
+    .admin-panel > div[style*="overflow"] { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .data-table { min-width: 600px; font-size: 0.82rem; }
+    .data-table th, .data-table td { padding: 10px 10px; }
+
+    /* ── Customer Order Cards (admin online orders) ── */
+    .customer-order-card { margin-bottom: 12px; }
+    .customer-card-header { flex-wrap: wrap; gap: 10px; padding: 14px 16px !important; }
+    .customer-card-header > div:last-child { gap: 14px !important; }
+
+    /* ── Action buttons ── */
+    .action-btns { flex-wrap: wrap; gap: 6px; }
+    .action-btns .btn { font-size: 0.75rem; padding: 5px 10px; }
+
+    /* ── Analytics ── */
+    .analytics-card { padding: 16px; }
+}
+
+/* ============================================================
+   PHONE (≤ 480px)
+   ============================================================ */
 @media (max-width: 480px) {
+
+    /* ── Navbar ── */
     nav { padding: 0 4%; }
     .nav-logo { font-size: 1.2rem; letter-spacing: 1px; }
-    .hero h1 { font-size: 2.2rem; }
+
+    /* ── Hero ── */
+    .hero h1 { font-size: 2rem; }
+    .hero-eyebrow { font-size: 0.7rem; }
     .hero-cta { flex-direction: column; align-items: center; }
-    .form-wrapper { padding: 32px 24px; }
+    .hero-cta .btn { width: 100%; text-align: center; }
+
+    /* ── Features ── */
+    .features-grid { grid-template-columns: 1fr; }
+    .feature-card { padding: 24px 20px; }
+
+    /* ── Menu Page ── */
+    .menu-grid .grid {
+        grid-template-columns: 1fr !important;
+    }
+    .menu-card-img { height: 180px; }
+    .menu-card-body { padding: 14px 14px 18px; }
+    .menu-card-name { font-size: 1.05rem; }
+    .menu-card-price { font-size: 1.1rem; }
+
+    /* ── Order Page ── */
+    .order-form { padding: 16px 12px; }
+    .form-section { padding: 16px 12px; }
+    .menu-select-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .order-lookup-form { flex-direction: column; align-items: stretch; }
+    .order-lookup-btn { width: 100%; }
+    .order-lookup-order-date { display: block; margin-left: 0; margin-top: 4px; }
+
+    /* ── Receipt Modal ── */
+    .receipt-modal-inner { padding: 14px 10px !important; }
+    .receipt-qr-section { padding: 10px 6px !important; }
+    .receipt-header { padding: 14px 12px !important; }
+    .receipt-items-table th,
+    .receipt-items-table td { font-size: 0.78rem; padding: 7px 8px; }
+    .receipt-total-value { font-size: 1.2rem; }
+
+    /* ── Login Page ── */
+    .login-page { padding: 20px 0; }
+    .form-wrapper { padding: 28px 18px; margin: 16px; width: auto; }
+
+    /* ── Admin ── */
+    .stats-row { grid-template-columns: 1fr; }
+    .admin-main { padding: 16px 12px; }
+    .admin-panel { padding: 16px 12px; }
+    .admin-panel-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .admin-header h1 { font-size: 1.6rem; }
+
+    /* ── Data Table — tighter on phone ── */
+    .data-table { min-width: 480px; font-size: 0.78rem; }
+    .data-table th, .data-table td { padding: 8px 8px; }
+
+    /* ── Customer Order Cards ── */
+    .customer-card-header { padding: 12px !important; }
+    .customer-card-header > div:first-child { gap: 10px !important; }
+    .customer-card-header > div:first-child > div:last-child > div:first-child { font-size: 0.95rem; }
+    .customer-card-header > div:last-child { gap: 10px !important; }
+
+    /* ── Status badges ── */
+    .status-badge { font-size: 0.65rem; padding: 3px 8px; }
+
+    /* ── Action buttons ── */
+    .action-btns .btn { font-size: 0.7rem; padding: 4px 8px; }
+
+    /* ── Analytics ── */
+    .analytics-card { padding: 14px 12px; }
+
+    /* ── QR Payment modal on phone ── */
+    #payment-qr-code img { width: 180px !important; height: 180px !important; }
+}
+
+/* ============================================================
+   TINY PHONE (≤ 360px) — extra safety net
+   ============================================================ */
+@media (max-width: 360px) {
+    .hero h1 { font-size: 1.7rem; }
+    .nav-logo { font-size: 1rem; }
+    .form-wrapper { margin: 8px; padding: 22px 14px; }
+    .admin-panel { padding: 12px 10px; }
+    .data-table { min-width: 420px; font-size: 0.74rem; }
+    #payment-qr-code img { width: 150px !important; height: 150px !important; }
+    .stats-row { gap: 8px; }
+    .stat-card-value { font-size: 1.5rem; }
 }

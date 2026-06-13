@@ -1,12 +1,8 @@
 <?php
 // Description: Admin login page for the Kape Inato cafe management system.
-// Function: Handles admin authentication, validates credentials, and manages login sessions.
-// Technical: Uses PHP sessions for state management, prepared statements for security, supports multiple password hashing methods.
 
-// Session initialization
-// Description: Starts the PHP session for user authentication state.
-// Function: Initializes or resumes session to track admin login status.
-// Technical: Must be called before any output; enables session variables for login state.
+require_once __DIR__ . '/helpers.php';
+
 session_start();
 
 // Redirect if already logged in
@@ -60,18 +56,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Technical: num_rows check; fetch_assoc() retrieves user data as associative array.
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
-            // Password verification
-            // Description: Validates the provided password against stored hash.
-            // Function: Supports both modern password_hash and legacy md5 for backward compatibility.
-            // Technical: password_verify() for secure hashes; fallback to md5 comparison; logical OR for multiple checks.
-            $valid = password_verify($password, $user['password'])
-                     || $user['password'] === md5($password);
+            // Password verification — Fix #5: MD5 fallback removed
+            // Only bcrypt via password_verify() is accepted.
+            // MD5 is cryptographically broken and was removed for security.
+            $valid = password_verify($password, $user['password']);
 
             // Successful authentication
             // Description: Sets up user session and redirects to admin dashboard.
             // Function: Establishes authenticated session state and navigates to protected area.
             // Technical: Sets multiple session variables; header() redirection; exit() prevents further execution.
             if ($valid) {
+                // Fix LOW-4: Regenerate session ID on login to prevent session fixation attacks
+                session_regenerate_id(true);
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_username'] = $user['username'];
                 $_SESSION['admin_id'] = $user['id'];
@@ -101,6 +97,7 @@ Technical: HTML5 with CSS classes, form validation, PHP integration for dynamic 
 <!-- Description: HTML document head with metadata and styles.
 Function: Sets page title, charset, viewport, favicon, and links to stylesheet.
 Technical: Meta tags for mobile responsiveness and character encoding. -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,6 +108,7 @@ Technical: Meta tags for mobile responsiveness and character encoding. -->
 <!-- Description: HTML body with login page layout.
 Function: Contains the login form wrapper and background styling.
 Technical: Uses CSS class 'login-page' for specific styling. -->
+
 <body class="login-page">
 
     <!-- Description: Login form container with branding and form elements.
@@ -138,8 +136,8 @@ Technical: Uses CSS class 'login-page' for specific styling. -->
                 Function: Accepts admin username input.
                 Technical: Text input with placeholder; required validation; PHP preserves input on error. -->
                 <input type="text" id="username" name="username"
-                       placeholder="admin" required
-                       value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
+                    placeholder="admin" required
+                    value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
             </div>
             <div class="form-group">
                 <label class="form-label" for="password">Password</label>
@@ -147,7 +145,7 @@ Technical: Uses CSS class 'login-page' for specific styling. -->
                 Function: Accepts admin password input (masked).
                 Technical: Password input type for security; placeholder with dots; required validation. -->
                 <input type="password" id="password" name="password"
-                       placeholder="••••••••" required>
+                    placeholder="••••••••" required>
             </div>
             <!-- Description: Form submission button.
             Function: Triggers form submission for authentication.
@@ -166,4 +164,5 @@ Technical: Uses CSS class 'login-page' for specific styling. -->
     </div>
 
 </body>
+
 </html>
